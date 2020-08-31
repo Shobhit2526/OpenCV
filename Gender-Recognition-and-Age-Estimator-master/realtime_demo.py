@@ -11,11 +11,7 @@ from keras.utils.data_utils import get_file
 
 
 class FaceCV(object):
-    
   
-    """
-    Singleton class for face recongnition task
-    """
     CASE_PATH = ".\\pretrained_models\\haarcascade_frontalface_alt.xml"
     WRN_WEIGHTS_PATH = ".\\pretrained_models\\weights.18-4.06.hdf5"
 
@@ -43,13 +39,7 @@ class FaceCV(object):
         cv2.putText(image, label, point, font, font_scale, (255, 255, 255), thickness)
 
     def crop_face(self, imgarray, section, margin=40, size=64):
-        """
-        :param imgarray: full image
-        :param section: face detected area (x, y, w, h)
-        :param margin: add some margin to the face detected area to include a full head
-        :param size: the result image resolution with be (size x size)
-        :return: resized image in numpy array with shape (size x size x 3)
-        """
+       
         img_h, img_w, _ = imgarray.shape
         if section is None:
             section = [0, 0, img_w, img_h]
@@ -82,7 +72,6 @@ class FaceCV(object):
    
         face_cascade = cv2.CascadeClassifier(self.CASE_PATH)
 
-        # 0 means the default video capture device in OS
         video_capture = cv2.VideoCapture(0)
         # infinite loop, break by key ESC
         while True:
@@ -99,7 +88,6 @@ class FaceCV(object):
             )
             if faces is not ():
                 
-                # placeholder for cropped faces
                 face_imgs = np.empty((len(faces), self.face_size, self.face_size, 3))
                 for i, face in enumerate(faces):
                     face_img, cropped = self.crop_face(frame, face, margin=40, size=self.face_size)
@@ -126,7 +114,6 @@ class FaceCV(object):
             cv2.imshow('Keras Faces', frame)
             if cv2.waitKey(5) == 27:  # ESC key press
                 break
-        # When everything is done, release the capture
         video_capture.release()
         cv2.destroyAllWindows()
 
